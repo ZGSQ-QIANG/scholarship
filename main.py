@@ -37,7 +37,7 @@ if not os.path.exists(pdf_path):
 # 将PDF第一页转为图片（如果是多页论文可以处理多页）
 encoded_string = None
 
-# 优先使用 pdf2image + Poppler；若失败则回退到 PyMuPDF
+
 
 try:
     doc = fitz.open(pdf_path)
