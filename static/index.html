@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学术论文验证助手</title>
+    <link rel="stylesheet" href="/static/style.css?v=1">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <h1>🎓 学术论文验证助手</h1>
+            <p class="subtitle">上传论文PDF，智能验证真实性与作者归属</p>
+        </header>
+
+        <!-- 主要内容区 -->
+        <div class="main-content">
+            <!-- 对话区域 -->
+            <div class="chat-container">
+                <div class="messages" id="messages">
+                    <div class="message bot-message">
+                        <div class="message-content">
+                            <p>👋 您好！我是论文验证助手。</p>
+                            <p>请上传您的论文PDF，我将帮您验证论文的真实性及作者归属。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 输入区域 -->
+                <div class="input-area">
+                    <input type="file" id="fileInput" accept=".pdf" style="display: none;">
+                    <button class="upload-btn" id="uploadBtn" title="上传PDF">
+                        📎 上传PDF
+                    </button>
+                    <input 
+                        type="text" 
+                        id="messageInput" 
+                        placeholder="输入消息与助手对话..."
+                        autocomplete="off"
+                    >
+                    <button class="send-btn" id="sendBtn">
+                        发送
+                    </button>
+                </div>
+            </div>
+
+            <!-- 侧边栏（可选信息展示） -->
+            <div class="sidebar">
+                <div class="info-card">
+                    <h3>📋 使用说明</h3>
+                    <ul>
+                        <li>点击"上传PDF"选择论文文件</li>
+                        <li>系统将自动识别论文信息</li>
+                        <li>调用工具验证论文真实性</li>
+                        <li>支持与助手继续对话</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h3>✨ 验证内容</h3>
+                    <ul>
+                        <li>论文标题</li>
+                        <li>作者列表</li>
+                        <li>DOI号</li>
+                        <li>发表信息</li>
+                    </ul>
+                </div>
+
+                <button class="reset-btn" id="resetBtn">
+                    🔄 重置会话
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js?v=1"></script>
+</body>
+</html>

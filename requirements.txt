@@ -1,0 +1,6 @@
+python-dotenv
+zhipuai
+pymupdf
+requests
+flask
+flask-cors
