@@ -4,3 +4,6 @@ pymupdf
 requests
 flask
 flask-cors
+beautifulsoup4
+playwright
+markdownify

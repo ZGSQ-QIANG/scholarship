@@ -45,3 +45,12 @@ package-lock.json
 # 7. 项目测试/示例文件
 # --------------------
 *.pdf
+
+# --------------------
+# 8. 测试和调试文件
+# --------------------
+test_*.py
+debug_*.html
+screenshot_*.png
+result_*.html
+full_page_*.html
