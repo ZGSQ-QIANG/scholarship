@@ -29,5 +29,27 @@ tools_schema=[
             },
             "required": ["title", "authors"]
         }
+    },
+    #学信网学籍在线验证码验证工具
+    {
+        "type":"function",
+        "function":{
+            "name":"certificate_verify",
+            "description":"验证学信网学籍在线验证码，获取学籍信息。",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "name":{
+                        "type":"string",
+                        "description":"姓名"
+                    },
+                    "vcode": {
+                        "type": "string",
+                        "description": "学籍在线验证码，格式如 ACY3RBVSBQQDN6Z1"
+                    }
+                },
+                "required": ["vcode"]
+            }
+        }
     }
 ]
