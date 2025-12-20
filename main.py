@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from zhipuai import ZhipuAI
 from tool_definitions import tools_schema
 from services.paper_verify import paper_verify
+from services.certificate_verify import certificate_verify
 import fitz
 
 load_dotenv()
