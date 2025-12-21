@@ -35,5 +35,6 @@ Thumbs.db
 .vscode/
 *.swp
 
+*.pdf
 
 node_modules/
