@@ -78,11 +78,14 @@ def certificate_verify(vcode,name=None):
                 return markdown_content """
             else:
                 # 验证码无效
-                print(f"   [Service] ✗ 验证码无效")
-                return{
-                    "status": "invalid",
-                    "message": "验证码无效，未找到学籍信息。"
-                }
+                result_error=page.query_selector('.result-error h2')
+                if result_error:    
+                    error_text=result_error.inner_text().strip()
+                    print(f"   [Service] ✗ {error_text}")
+                    return{
+                        "status": "invalid",
+                        "message": f"{error_text}"
+                    }
 
         except Exception as e:
             print(f"   [Error] 验证过程发生错误: {e}")

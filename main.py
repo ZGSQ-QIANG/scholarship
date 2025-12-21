@@ -16,7 +16,7 @@ client = ZhipuAI(api_key=os.getenv("ZHIPU_API_KEY"))
 # ==========================================
 # 1. PDF 转图片并编码
 # ==========================================
-pdf_path = os.getenv("PAPER_PATH", "./paper1.pdf")  # 支持环境变量覆盖路径
+pdf_path = os.getenv("PAPER_PATH", "./certificate_test.pdf")  # 支持环境变量覆盖路径
 print("正在处理PDF文件...")
 
 # 路径规范化与存在性检查；若不存在则尝试在工作区内寻找任意 PDF
@@ -61,7 +61,7 @@ messages = [
         "content": [
             {
                 "type": "text",
-                "text": "请识别这篇论文的关键信息，包括：标题、作者列表、DOI号（如果有）、发表日期。如果这是一篇学术论文，请调用论文验证工具进行验证。"
+                "text": "请识别这些文件。如果这是一篇学术论文，这篇论文的关键信息，包括：标题、作者列表、DOI号（如果有）、发表日期并请调用论文验证工具进行验证。如果这是学籍在线验证报告或学历证书电子注册备案表，那么关键信息就是：姓名和学籍在线验证码，请调用学信网学籍验证工具进行验证。"
             },
             {
                 "type": "image_url",
@@ -107,8 +107,11 @@ if assistant_message.tool_calls:
                 authors=function_args.get("authors"),
                 doi=function_args.get("doi")
             )
-        else:
-            result = {"error": "未知的工具"}
+        elif function_name == "certificate_verify":
+            result = certificate_verify(
+                vcode=function_args.get("vcode"),
+                name=function_args.get("name")
+            )
         
         print(f"验证结果: {json.dumps(result, ensure_ascii=False, indent=2)}")
         
@@ -129,7 +132,7 @@ if assistant_message.tool_calls:
         "content": [
             {
                 "type": "text",
-                "text": "请根据工具返回结果，给出明确结论：\n- 若工具返回 status=success，输出：验证通过，并简要说明匹配到的作者/DOI等依据。\n- 若工具返回 status=warning 或 failed，输出：验证不通过（或存在疑问），并简要说明原因。\n只输出中文结论与理由，尽量简洁。"
+                "text": "请根据工具返回结果，给出明确结论：\n对于论文验证：- 若工具返回 status=success，输出：验证通过，并简要说明匹配到的作者/DOI等依据。\n- 若工具返回 status=warning 或 failed，输出：验证不通过（或存在疑问），并简要说明原因。\n对于学籍在线验证报告或学历证书电子注册备案表验证：- 根据返回内容自行判断并简要说明原因。\n只输出中文结论与理由，尽量简洁。"
             }
         ]
     })
