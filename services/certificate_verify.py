@@ -2,7 +2,7 @@ from playwright.sync_api import sync_playwright
 from markdownify import markdownify as md
 import time
 
-def certificate_verify(vcode,name=None):
+def certificate_verify(vcode,name=None, **kwargs):
     """
     验证学信网学籍在线验证码
 
@@ -13,6 +13,9 @@ def certificate_verify(vcode,name=None):
         None: 如果验证码无效
         str: 如果验证码有效，返回学籍信息的 Markdown 格式内容
     """
+    # 获取函数参数签名，检查多余参数并丢弃
+    if kwargs:
+        print(f"⚠️ 模型多传了这些参数(已忽略): {kwargs}")
 
     print(f"[Service: CHSI] 开始验证学籍证明: vcode={vcode}")
 
@@ -89,6 +92,9 @@ def certificate_verify(vcode,name=None):
 
         except Exception as e:
             print(f"   [Error] 验证过程发生错误: {e}")
-            return None
+            return {
+                "status": "error",
+                "message": f"验证过程发生错误: {e}"
+            }
         finally:
             browser.close()

@@ -1,6 +1,9 @@
 import requests
 #[基于 CrossRef 官方 API] 验证学术论文
-def paper_verify(title, authors, doi=None):
+def paper_verify(title, authors, doi=None, **kwargs):
+    # 获取函数参数签名，检查多余参数并丢弃
+    if kwargs:
+        print(f"⚠️ 模型多传了这些参数(已忽略): {kwargs}")
     # ==========================================
     # 1. 配置 API 和 礼貌头 (Polite Header)
     # ==========================================
@@ -127,7 +130,7 @@ def paper_verify(title, authors, doi=None):
             "status": "success",
             "message": "论文验证通过",
             "detail": {
-                "title": official_title,
+                "title": official_title,     
                 "doi": found_data.get('DOI'),
                 "publisher": found_data.get('publisher'),
                 "matched_authors": matched_authors
