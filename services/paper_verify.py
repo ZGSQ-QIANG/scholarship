@@ -4,9 +4,8 @@ def paper_verify(title, authors, doi=None, **kwargs):
     # 获取函数参数签名，检查多余参数并丢弃
     if kwargs:
         print(f"⚠️ 模型多传了这些参数(已忽略): {kwargs}")
-    # ==========================================
+
     # 1. 配置 API 和 礼貌头 (Polite Header)
-    # ==========================================
     base_url = "https://api.crossref.org/works"
     
     # 告诉 CrossRef "是谁在调用"，进入快车道，不会被轻易限流。
@@ -18,12 +17,11 @@ def paper_verify(title, authors, doi=None, **kwargs):
 
     found_data = None
 
-    # ==========================================
+
     # 2. 策略 A: 有 DOI 直接查 (最准)
-    # ==========================================
     if doi:
         try:
-            # 1. 清洗 DOI (有些用户会上传 "https://doi.org/10.xxx"，我们需要去掉前缀)
+            # 1. 清洗 DOI (有些用户会上传 "https://doi.org/10.xxx"，需要去掉前缀)
             clean_doi = doi.replace("https://doi.org/", "").replace("http://doi.org/", "").strip()
             
             # 2. 拼接 URL
@@ -42,16 +40,15 @@ def paper_verify(title, authors, doi=None, **kwargs):
         except Exception as e:
             print(f"   [Error] DOI 请求发生错误: {e}")
 
-    # ==========================================
+
     # 3. 策略 B: 没 DOI (或查不到) 用标题搜
-    # ==========================================
     if not found_data and title:
         try:
             print("   [Service] 尝试使用标题搜索...")
             params = {
                 "query.title": title, # 告诉它搜标题
                 "rows": 1,            # 我只要第1条最像的
-                "select": "title,DOI,author,publisher,created" # 只返回这几个字段
+                "select": "title,DOI,author,publisher,created,container-title" # 只返回这几个字段
             }
             
             resp = requests.get(base_url, params=params, headers=headers, timeout=5)
@@ -64,9 +61,8 @@ def paper_verify(title, authors, doi=None, **kwargs):
         except Exception as e:
             print(f"   [Error] 标题搜索发生错误: {e}")
 
-    # ==========================================
+
     # 4. 结果判定与作者核对
-    # ==========================================
     if not found_data:
         return {
             "status": "failed", 
@@ -74,6 +70,8 @@ def paper_verify(title, authors, doi=None, **kwargs):
         }
     #获取返回论文标题
     official_title= found_data.get('title', [''])[0]
+    #获取返回论文期刊或会议
+    official_journal= found_data.get('container-title', [''])[0]
     # 比对用户提供的标题和官方标题（全小写去空格）
     user_t=title.strip().lower()
     official_t=official_title.strip().lower()
@@ -119,12 +117,10 @@ def paper_verify(title, authors, doi=None, **kwargs):
         if is_match:
             matched_authors.append(user_auth)
 
-    # ==========================================
     # 5. 返回最终结果
-    # ==========================================
     if matched_authors:
         # 获取论文的官方标题
-        official_title = found_data.get('title', ['未知标题'])[0]
+        #official_title = found_data.get('title', ['未知标题'])[0]
         
         return {
             "status": "success",
@@ -133,11 +129,12 @@ def paper_verify(title, authors, doi=None, **kwargs):
                 "title": official_title,     
                 "doi": found_data.get('DOI'),
                 "publisher": found_data.get('publisher'),
+                "journal": official_journal,
                 "matched_authors": matched_authors
             }
         }
     else:
-        official_title = found_data.get('title', ['未知标题'])[0]
+        #official_title = found_data.get('title', ['未知标题'])[0]
         return {
             "status": "warning",
             "message": "论文真实存在，但在作者列表中未找到您的名字。",

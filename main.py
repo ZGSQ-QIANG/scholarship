@@ -8,7 +8,9 @@ from zhipuai import ZhipuAI
 from tool_definitions import tools_schema
 from services.paper_verify import paper_verify
 from services.certificate_verify import certificate_verify
+from services.patent_verify import patent_verify
 import fitz
+
 
 load_dotenv()
 
@@ -94,7 +96,8 @@ print("发送给模型识别...")
 #建立函数映射表
 availabel_functions={
     "paper_verify": paper_verify,
-    "certificate_verify": certificate_verify
+    "certificate_verify": certificate_verify,
+    "patent_verify": patent_verify
 }
 
 #存储每个文件的最终结论
@@ -183,7 +186,11 @@ for file_data in processed_files_data:
             "content": [
                 {
                     "type": "text",
-                    "text": "请根据工具返回结果，给出明确结论：\n对于论文验证：- 若工具返回 status=success，输出：验证通过，并简要说明匹配到的作者/DOI等依据。\n- 若工具返回 status=warning 或 failed，输出：验证不通过（或存在疑问），并简要说明原因。\n对于学籍在线验证报告或学历证书电子注册备案表验证：- 根据返回内容自行判断并简要说明原因。\n只输出中文结论与理由，尽量简洁。"
+                    "text": '''请根据工具返回结果，给出明确结论：\n,
+                    对于论文验证：- 若工具返回 status=success,输出:验证通过，并简要说明匹配到的作者/DOI等依据,并输出论文的发表期刊或会议名称，然后由你来判断该期刊或会议属于什么等级。\n-
+                    若工具返回 status=warning 或 failed，输出：验证不通过（或存在疑问），并简要说明原因。\n
+                    对于学籍在线验证报告或学历证书电子注册备案表验证：- 根据返回内容与源文件信息比对，然后判断源文件是否真实有效，并简要说明原因。\n
+                    只输出中文结论与理由，尽量简洁。'''
                 }
             ]
         })

@@ -51,5 +51,31 @@ tools_schema=[
                 "required": ["vcode"]
             }
         }
+    },
+    #专利证书验证工具
+    {
+        "type":"function",
+        "function":{
+            "name":"patent_verify",
+            "description":"验证中国国家知识产权局的专利证书，确认证书的真实性及专利信息。",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "apply_code": {
+                        "type": "string",
+                        "description": "专利申请号，例如 '2017105872931'"
+                    },
+                    "name":{
+                        "type":"string",
+                        "description":"专利权人姓名"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "专利名称"
+                    }
+                },
+                "required": ["apply_code", "name", "title"]
+            }
+        }
     }
 ]

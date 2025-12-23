@@ -63,7 +63,13 @@ def certificate_verify(vcode,name=None, **kwargs):
                     # 转换为 Markdown
                     markdown_content = md(html_content)
 
-                    return markdown_content
+                    return {
+                        "status": "valid",
+                        "message": "验证码有效，学籍信息如下：",
+                        "detail":{
+                            "markdown": markdown_content
+                        }
+                    }
                 # 找到学籍信息
                 else:
                     print(f"   [Service] ✓ 验证码有效，但姓名不匹配 (页面姓名: {official_name}, 提供姓名: {user_name})")
@@ -72,13 +78,7 @@ def certificate_verify(vcode,name=None, **kwargs):
                         "status": "name_mismatch",
                         "message": f"验证码有效，但姓名不匹配 (页面姓名: {official_name}, 提供姓名: {user_name})"
                     }
-                """ # 获取 HTML 内容
-                html_content = result_table.inner_html()
-
-                # 转换为 Markdown
-                markdown_content = md(html_content)
-
-                return markdown_content """
+               
             else:
                 # 验证码无效
                 result_error=page.query_selector('.result-error h2')
@@ -97,4 +97,5 @@ def certificate_verify(vcode,name=None, **kwargs):
                 "message": f"验证过程发生错误: {e}"
             }
         finally:
+            context.close()
             browser.close()
