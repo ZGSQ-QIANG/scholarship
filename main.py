@@ -113,7 +113,7 @@ for file_data in processed_files_data:
         "content":[
             {
                 "type":"text",
-                "text":f"请识别这个文件 #{file_data['index']} 的内容，并调用相应的验证工具（论文验证或学籍在线验证码验证）。"
+                "text":f"请识别这个文件 #{file_data['index']} 的内容，并调用相应的验证工具。"
             },
             {
                 "type":"image_url",

@@ -80,11 +80,11 @@ def paper_verify(title, authors, doi=None, **kwargs):
         print(f"   [Warning] 用户标题与官方标题不完全匹配: 用户='{user_t}' , 官方='{official_t}'")
         return{
             "status": "warning",
-            "message": "论文题目不匹配，请确认。",
+            "message": "论文题目不匹配，未找到该论文，请确认。",
             "detail": {
                 "provided_title": title,
                 "official_title": official_title,
-                "doi": found_data.get('DOI')
+                "official_doi": found_data.get('DOI')
             }
         }
     print("   [success] 论文标题匹配通过。")
