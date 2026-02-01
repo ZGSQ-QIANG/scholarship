@@ -44,12 +44,13 @@ scholarship/
 │   │   ├── certificate_verify.py    # 学信网验证
 │   │   └── patent_verify.py         # 专利验证
 │   ├── models/
+│   │   ├── database.py              # 数据库连接与自动建表逻辑
 │   │   └── schemas.py               # 数据模型
 │   ├── utils/
 │   │   └── image_processing.py      # 图片/PDF 处理
 │   ├── tool_definitions.py          # AI 工具定义
-│   ├── requirements.txt             # Python 依赖
-│   └── .env.example                 # 环境变量模板
+│   └── requirements.txt             # Python 依赖
+│ 
 │
 ├── frontend/                          # 🎨 前端（Vue 3 + Vite）
 │   ├── src/
@@ -66,14 +67,7 @@ scholarship/
 │   ├── index.html
 │   ├── package.json
 │   └── vite.config.js
-│
-├── start-all.ps1                      # 一键启动脚本 ✨
-├── start-backend.ps1                  # 后端启动脚本
-├── start-frontend.ps1                 # 前端启动脚本
-├── QUICK_START.md                     # 快速入门指南
-├── PROJECT_STRUCTURE.md               # 项目架构说明
-└── DEPLOYMENT.md                      # 部署说明文档
-```
+└──
 
 ## 快速开始
 
@@ -201,57 +195,3 @@ GET /api/results
 
 1. 在 `services/` 目录添加验证函数
 2. 在 `tool_definitions.py` 注册工具
-3. 在 `backend/core/verification_service.py` 添加映射
-
-## 注意事项
-
-⚠️ **重要提示**:
-
-1. **API Key**: 必须配置有效的智谱 API Key
-2. **Playwright**: 首次运行需要安装浏览器驱动
-3. **网络**: 验证过程需要访问外部 API（CrossRef、学信网等）
-4. **性能**: 每次验证可能耗时 15-30 秒
-5. **存储**: 临时文件存储在 `temp_uploads/` 目录
-
-## 常见问题
-
-### Q: 验证一直卡在"处理中"？
-A: 检查后端日志，可能是网络问题或 Playwright 超时。
-
-### Q: 上传失败？
-A: 确认文件格式是否支持，文件大小不要超过 10MB。
-
-### Q: API 调用失败？
-A: 检查 `.env` 文件中的 `ZHIPU_API_KEY` 是否正确。
-
-### Q: Playwright 报错？
-A: 运行 `playwright install chromium` 安装浏览器。
-
-## 生产部署
-
-### 后端部署建议
-
-- 使用 Gunicorn + Uvicorn 运行
-- 配置 Nginx 反向代理
-- 使用 PostgreSQL 替代 SQLite
-- 文件存储使用 OSS（阿里云/腾讯云）
-
-### 前端部署建议
-
-```bash
-npm run build
-```
-
-将 `dist/` 目录部署到 Nginx 或 CDN。
-
-## 许可证
-
-MIT License
-
-## 作者
-
-奖学金材料验证系统开发团队
-
----
-
-🎓 让材料审核更高效、更智能！
